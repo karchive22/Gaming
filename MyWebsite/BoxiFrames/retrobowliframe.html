@@ -1,0 +1,94 @@
+<html>
+<head>
+    <link rel="stylesheet" href="style.css">
+    <title>Noodle Tools Helper Online</title>
+    <link rel="icon" type="image/png" href="favicon.png">
+</head>
+
+<style>
+    iframe {
+        align-items: center;
+        border: 5px solid black;
+        border-radius: 15px;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .CenterColor {
+        text-align: center;
+        color: rgb(89, 205, 243);
+    }
+
+    body {
+        background-color: rgb(8, 112, 182);
+    }
+
+    #BackButton {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin: 10px auto;
+        padding: 15px 20px;
+        color: white;
+        text-align: center;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        max-width: 200px;
+        width: 100%;
+        background-color: rgb(36, 184, 184);
+    }
+
+    /* Fullscreen button */
+    #FullscreenButton {
+        display: block;
+        margin: 15px auto;
+        padding: 10px 20px;
+        background-color: rgb(30, 150, 200);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background-color 0.3s;
+    }
+
+    #FullscreenButton:hover {
+        background-color: rgb(20, 120, 170);
+    }
+</style>
+
+<body>
+<link rel="stylesheet" href="style.css">
+
+<h1 class="CenterColor">Retrobowl</h1>
+<h2 class="CenterColor">Welcome to the game Retrobowl.</h2>
+
+<iframe id="gameframe" title="retrobowl" width="70%" height="65%" src="/Games/Retrobowl/index.html"></iframe>
+
+<!-- Fullscreen Button -->
+<button id="FullscreenButton">⛶ Fullscreen</button>
+
+<!-- Back Button -->
+<button id="BackButton" onclick="window.location.href='/index.html'">Back to Main Page</button>
+
+<script>
+    const iframe = document.getElementById("gameframe");
+    const fsButton = document.getElementById("FullscreenButton");
+
+    fsButton.onclick = () => {
+        if (iframe.requestFullscreen) {
+            iframe.requestFullscreen();
+        } else if (iframe.webkitRequestFullscreen) {
+            iframe.webkitRequestFullscreen();
+        } else if (iframe.msRequestFullscreen) {
+            iframe.msRequestFullscreen();
+        }
+    };
+</script>
+
+</body>
+</html>
