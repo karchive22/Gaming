@@ -1,42 +1,44 @@
 async function loadSidebar() {
     try {
-        // Fetch the current directory listing (BoxiFrames folder)
-        const response = await fetch(".");
+        // Always fetch the absolute Games directory
+        const response = await fetch("/Gaming/BoxiFrames/Games/");
         const text = await response.text();
 
-        // Parse the HTML returned by GitHub Pages
         const parser = new DOMParser();
         const doc = parser.parseFromString(text, "text/html");
 
-        // Find all links ending in "iframe.html"
-        const iframeFiles = [...doc.querySelectorAll("a")]
+        // Get all folder links (ending with "/"), ignore external links
+        const folders = [...doc.querySelectorAll("a")]
             .map(a => a.getAttribute("href"))
             .filter(href =>
                 href &&
-                href.endsWith("iframe.html") &&
-                !href.startsWith("http") // ignore GitHub help link
+                href.endsWith("/") &&
+                !href.startsWith("http")
             );
 
-        // Convert iframe filenames into sidebar entries
-        const games = iframeFiles.map(file => {
-            const base = file.replace("iframe.html", ""); // "retrobowliframe" -> "retrobowl"
-            const cleanName = base
-                .replace(/iframe$/i, "") // remove trailing "iframe"
-                .replace(/-/g, " ")      // replace dashes with spaces
-                .replace(/\b\w/g, c => c.toUpperCase()); // capitalize words
+        // Build game entries from folder names
+        const games = folders.map(folder => {
+            // "retrobowl/" -> "retrobowl"
+            const name = folder.replace("/", "");
+
+            const displayName = name
+                .replace(/-/g, " ")
+                .replace(/\b\w/g, c => c.toUpperCase());
 
             return {
-                name: cleanName,
-                url: file,
-                thumbnail: `../Thumbnails/${base}.png`
+                name: displayName,
+                // iframe lives in /Gaming/BoxiFrames/[name]iframe.html
+                url: `/Gaming/BoxiFrames/${name}iframe.html`,
+                thumbnail: `/Gaming/Thumbnails/${name}.png`
             };
         });
 
-        // Shuffle and pick 5 random games
+        // Shuffle and pick up to 5
         const selected = games.sort(() => Math.random() - 0.5).slice(0, 5);
 
-        // Render the sidebar
         const container = document.getElementById("sidebar");
+        if (!container) return;
+
         container.innerHTML = "";
 
         selected.forEach(game => {
@@ -48,7 +50,10 @@ async function loadSidebar() {
                 <span>${game.name}</span>
             `;
 
-            item.onclick = () => window.location.href = game.url;
+            item.onclick = () => {
+                window.location.href = game.url;
+            };
+
             container.appendChild(item);
         });
 
@@ -57,6 +62,4 @@ async function loadSidebar() {
     }
 }
 
-// Run on page load
 loadSidebar();
-
