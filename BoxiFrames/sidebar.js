@@ -1,39 +1,16 @@
 async function loadSuggestedGames() {
     try {
-        const response = await fetch("/Gaming/BoxiFrames/Games/");
-        const text = await response.text();
-
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(text, "text/html");
-
-        const folders = [...doc.querySelectorAll("a")]
-            .map(a => a.getAttribute("href"))
-            .filter(href =>
-                href &&
-                href.endsWith("/") &&
-                !href.startsWith("http")
-            );
-
-        const games = folders.map(folder => {
-            const name = folder.replace("/", "");
-
-            const displayName = name
-                .replace(/-/g, " ")
-                .replace(/\b\w/g, c => c.toUpperCase());
-
-            return {
-                name: displayName,
-                url: `${name}iframe.html`,
-                thumbnail: `../Thumbnails/${name}.png`
-            };
-        });
+        // Load the JSON file
+        const response = await fetch("games.json");
+        const games = await response.json();
 
         const list = document.getElementById("suggested-list");
         if (!list) return;
 
         list.innerHTML = "";
 
-        const selected = games.sort(() => Math.random() - 0.5);
+        // Shuffle and pick up to 5
+        const selected = games.sort(() => Math.random() - 0.5).slice(0, 5);
 
         selected.forEach(game => {
             const item = document.createElement("div");
@@ -45,15 +22,16 @@ async function loadSuggestedGames() {
             `;
 
             item.onclick = () => {
-                window.location.href = game.url;
+                window.location.href = game.file;
             };
 
             list.appendChild(item);
         });
 
     } catch (err) {
-        console.error("Sidebar load error:", err);
+        console.error("Error loading suggested games:", err);
     }
 }
 
 loadSuggestedGames();
+
