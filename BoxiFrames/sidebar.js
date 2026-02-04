@@ -1,36 +1,35 @@
 async function loadSuggestedGames() {
     try {
-        // Fetch the Games directory listing from the correct absolute path
-        const response = await fetch("/Gaming/BoxiFrames/Games/");
+        // Fetch the BoxiFrames directory listing
+        const response = await fetch("/Gaming/BoxiFrames/");
         const text = await response.text();
 
         const parser = new DOMParser();
         const doc = parser.parseFromString(text, "text/html");
 
-        // Get all folder links (ending with "/"), ignore external links
-        const folders = [...doc.querySelectorAll("a")]
+        // Find all .html files (ignore external links)
+        const htmlFiles = [...doc.querySelectorAll("a")]
             .map(a => a.getAttribute("href"))
             .filter(href =>
                 href &&
-                href.endsWith("/") &&
+                href.endsWith(".html") &&
                 !href.startsWith("http")
             );
 
-        // Build game entries from folder names
-        const games = folders.map(folder => {
-            // "drifthunters/" -> "drifthunters"
-            const name = folder.replace("/", "");
+        // Build game entries
+        const games = htmlFiles.map(file => {
+            // Remove .html → "drifthuntersiframe"
+            const base = file.replace(".html", "");
 
-            const displayName = name
+            // Make readable name
+            const displayName = base
                 .replace(/-/g, " ")
                 .replace(/\b\w/g, c => c.toUpperCase());
 
             return {
                 name: displayName,
-                // Open the game folder directly (same pattern as your "Fullscreen or Glitched?" link)
-                url: `Games/${name}/`,
-                // Thumbnails assumed in /Gaming/Thumbnails/[name].png
-                thumbnail: `../Thumbnails/${name}.png`
+                url: file, // direct link to the .html file
+                thumbnail: `../Thumbnails/${base}.png`
             };
         });
 
