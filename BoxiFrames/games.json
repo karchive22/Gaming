@@ -1,0 +1,17 @@
+[
+    {
+        "file": "drifthunters.html",
+        "name": "Drift Hunters",
+        "thumbnail": "../Thumbnails/drifthunters.png"
+    },
+    {
+        "file": "polytrack.html",
+        "name": "Polytrack",
+        "thumbnail": "../Thumbnails/polytrack.png"
+    },
+    {
+        "file": "retrobowl.html",
+        "name": "Retrobowl",
+        "thumbnail": "../Thumbnails/retrobowl.png"
+    }
+]
