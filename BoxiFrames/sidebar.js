@@ -1,6 +1,6 @@
-async function loadSidebar() {
+async function loadSuggestedGames() {
     try {
-        // Always fetch the absolute Games directory
+        // Fetch the Games directory listing from the correct absolute path
         const response = await fetch("/Gaming/BoxiFrames/Games/");
         const text = await response.text();
 
@@ -18,7 +18,7 @@ async function loadSidebar() {
 
         // Build game entries from folder names
         const games = folders.map(folder => {
-            // "retrobowl/" -> "retrobowl"
+            // "drifthunters/" -> "drifthunters"
             const name = folder.replace("/", "");
 
             const displayName = name
@@ -27,39 +27,41 @@ async function loadSidebar() {
 
             return {
                 name: displayName,
-                // iframe lives in /Gaming/BoxiFrames/[name]iframe.html
-                url: `/Gaming/BoxiFrames/${name}iframe.html`,
-                thumbnail: `/Gaming/Thumbnails/${name}.png`
+                // Open the game folder directly (same pattern as your "Fullscreen or Glitched?" link)
+                url: `Games/${name}/`,
+                // Thumbnails assumed in /Gaming/Thumbnails/[name].png
+                thumbnail: `../Thumbnails/${name}.png`
             };
         });
+
+        const list = document.getElementById("suggested-list");
+        if (!list) return;
+
+        list.innerHTML = "";
 
         // Shuffle and pick up to 5
         const selected = games.sort(() => Math.random() - 0.5).slice(0, 5);
 
-        const container = document.getElementById("sidebar");
-        if (!container) return;
-
-        container.innerHTML = "";
-
         selected.forEach(game => {
             const item = document.createElement("div");
-            item.className = "sidebar-item";
+            item.className = "suggested-item";
 
             item.innerHTML = `
-                <img src="${game.thumbnail}" onerror="this.style.display='none'">
-                <span>${game.name}</span>
+                <img class="thumbnail" src="${game.thumbnail}" onerror="this.style.display='none'">
+                <div class="game-label">${game.name}</div>
             `;
 
             item.onclick = () => {
                 window.location.href = game.url;
             };
 
-            container.appendChild(item);
+            list.appendChild(item);
         });
 
     } catch (err) {
-        console.error("Sidebar load error:", err);
+        console.error("Error loading suggested games:", err);
     }
 }
 
-loadSidebar();
+loadSuggestedGames();
+
