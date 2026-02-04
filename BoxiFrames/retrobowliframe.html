@@ -22,6 +22,7 @@
 
     body {
         background-color: rgb(8, 112, 182);
+        margin-left: 240px;
     }
 
     #BackButton {
@@ -42,7 +43,6 @@
         background-color: rgb(36, 184, 184);
     }
 
-    /* Fullscreen button */
     #FullscreenButton {
         display: block;
         margin: 15px auto;
@@ -59,36 +59,87 @@
     #FullscreenButton:hover {
         background-color: rgb(20, 120, 170);
     }
+
+    .color {
+        color: rgb(0, 255, 221);
+    }
+
+    #left-sidebar {
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 220px;
+        height: 100%;
+        background: rgb(5, 70, 120);
+        padding: 15px;
+        overflow-y: auto;
+        border-right: 4px solid black;
+    }
+
+    #left-sidebar h3 {
+        color: white;
+        text-align: center;
+        margin-bottom: 10px;
+    }
+
+    .suggested-item {
+        background: rgb(0, 0, 0);
+        color: white;
+        padding: 10px;
+        margin-bottom: 10px;
+        border-radius: 8px;
+        text-align: center;
+        cursor: pointer;
+        border: 2px solid rgb(20, 120, 170);
+    }
+
+    .suggested-item:hover {
+        background: rgb(20, 120, 170);
+    }
+
+    .suggested-placeholder {
+        width: 100%;
+        height: 60px;
+        background: black;
+        border-radius: 8px;
+        margin-bottom: 10px;
+    }
 </style>
 
 <body>
 <link rel="stylesheet" href="style.css">
 
+<div id="left-sidebar">
+    <h3>Suggested Games</h3>
+    <div id="suggested-list"></div>
+</div>
+
 <h1 class="CenterColor">Retrobowl</h1>
 <h2 class="CenterColor">Welcome to the game Retrobowl.</h2>
 
-<iframe id="gameframe" title="retrobowl" width="70%" height="65%" src="/Gaming/BoxiFrames/Games/retrobowl"></iframe>
+<iframe id="gameframe" title="retrobowl" width="70%" height="65%" src="Games/retrobowl/"></iframe>
 
-<!-- Fullscreen Button -->
 <button id="FullscreenButton">⛶ Fullscreen</button>
 
-<!-- Back Button -->
-<button id="BackButton" onclick="window.location.href='/index.html'">Back to Main Page</button>
+<button id="BackButton" onclick="window.location.href='../index.html'">Back to Main Page</button>
+
+<a href="Games/retrobowl/" target="_blank">
+    <p class="color">Fullscreen or Glitched? click here</p>
+</a>
+
+<script src="sidebar.js"></script>
 
 <script>
     const iframe = document.getElementById("gameframe");
     const fsButton = document.getElementById("FullscreenButton");
 
     fsButton.onclick = () => {
-        if (iframe.requestFullscreen) {
-            iframe.requestFullscreen();
-        } else if (iframe.webkitRequestFullscreen) {
-            iframe.webkitRequestFullscreen();
-        } else if (iframe.msRequestFullscreen) {
-            iframe.msRequestFullscreen();
-        }
+        if (iframe.requestFullscreen) iframe.requestFullscreen();
+        else if (iframe.webkitRequestFullscreen) iframe.webkitRequestFullscreen();
+        else if (iframe.msRequestFullscreen) iframe.msRequestFullscreen();
     };
 </script>
 
 </body>
 </html>
+
