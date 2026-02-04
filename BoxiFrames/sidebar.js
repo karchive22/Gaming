@@ -1,5 +1,5 @@
 async function loadGames() {
-    // Fetch the directory listing for the Games folder (relative)
+    // Fetch directory listing for Games folder
     const response = await fetch("Games/");
     const text = await response.text();
 
@@ -16,7 +16,8 @@ async function loadGames() {
         const cleanName = folder.replace("/", "");
         return {
             name: cleanName,
-            url: "Games/" + folder
+            url: "Games/" + folder,
+            thumbnail: "Thumbnails/" + cleanName + ".png"
         };
     });
 
@@ -27,14 +28,30 @@ async function loadGames() {
     const picks = shuffle([...allGames]).slice(0, 5);
     const sidebar = document.getElementById("suggested-list");
 
-    picks.forEach(game => {
+    for (let game of picks) {
         const div = document.createElement("div");
         div.className = "suggested-item";
-        div.textContent = game.name;
-        div.onclick = () => window.location.href = game.url;
-        sidebar.appendChild(div);
-    });
 
+        const img = document.createElement("img");
+        img.src = game.thumbnail;
+        img.onerror = () => {
+            img.style.display = "none"; // hide broken image
+        };
+        img.className = "thumbnail";
+
+        const label = document.createElement("div");
+        label.textContent = game.name;
+        label.className = "game-label";
+
+        div.appendChild(img);
+        div.appendChild(label);
+
+        div.onclick = () => window.location.href = game.url;
+
+        sidebar.appendChild(div);
+    }
+
+    // Add placeholders if fewer than 5 games
     for (let i = picks.length; i < 5; i++) {
         const placeholder = document.createElement("div");
         placeholder.className = "suggested-placeholder";
