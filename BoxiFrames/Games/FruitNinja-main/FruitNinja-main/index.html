@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Noodle Tools Helper Online</title>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: black;
+        }
+
+        /* Container MUST stay first and untouched by JS */
+        .container {
+            width: 100vw;
+            height: 100vh;
+
+            /* THIS is the magic: turn it into a flexbox */
+            display: flex;
+            flex-direction: row;
+        }
+
+        /* Sidebar that pushes the game right */
+        .sidebar {
+            width: 220px;
+            background: black; /* solid black like you wanted */
+            color: white;
+            padding: 20px;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        .sidebar a {
+            color: #4fc3f7;
+            text-decoration: none;
+        }
+
+        /* Game area takes the rest of the screen */
+        #game {
+            flex: 1;
+            height: 100%;
+            position: relative;
+        }
+
+        /* PixiJS canvas will fill #game automatically */
+        canvas {
+            width: 100% !important;
+            height: 100% !important;
+        }
+    </style>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/5.1.3/pixi.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/pixi-particles@4.2.0/dist/pixi-particles.js"></script>
+</head>
+
+<body>
+
+    <!-- MUST BE FIRST ELEMENT -->
+    <div class="container">
+
+        <!-- Sidebar that does NOT overlay the game -->
+        <div class="sidebar">
+            <h2>Fruit Ninja Clone</h2>
+            <p>Original code by:</p>
+            <a href="https://github.com/taquion009/FruitNinja">taquion009</a>
+            <p>Sidebar code written by AI</p>
+            <p>Apologizes for the distortion in Frame. </p>
+            
+        </div>
+
+        <!-- Game area -->
+        <div id="game"></div>
+
+    </div>
+
+    <script src="main.js" type="module"></script>
+    <script src="state.js"></script>
+</body>
+</html>
