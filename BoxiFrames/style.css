@@ -57,3 +57,10 @@ iframe {
     .color {
         color: rgb(0, 255, 221);
     }
+
+    .button img {
+  width: 120px;      /* force consistent width */
+  height: 120px;     /* force consistent height */
+  object-fit: contain; /* squeeze image without distortion */
+  margin-bottom: 10px;
+}
